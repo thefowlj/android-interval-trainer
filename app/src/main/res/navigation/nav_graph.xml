@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph.xml"
+    app:startDestination="@id/EnterTimeFragment">
+
+    <fragment
+        android:id="@+id/IntervalFragment"
+        android:name="com.thefowlj.intervaltrainer.IntervalFragment"
+        android:label="Interval Fragment"
+        tools:layout="@layout/fragment_interval" >
+        <argument
+            android:name="intervals"
+            app:argType="com.thefowlj.intervaltrainer.Interval[]" />
+        <action
+            android:id="@+id/action_IntervalFragment_to_EnterTimeFragment"
+            app:destination="@id/EnterTimeFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/EnterTimeFragment"
+        android:name="com.thefowlj.intervaltrainer.EnterTimeFragment"
+        android:label="Enter Time Fragment"
+        tools:layout="@layout/fragment_enter_time" >
+        <action
+            android:id="@+id/action_EnterTimeFragment_to_IntervalFragment"
+            app:destination="@id/IntervalFragment" />
+    </fragment>
+
+
+</navigation>
