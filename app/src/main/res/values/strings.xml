@@ -16,4 +16,5 @@
     <string name="interval_rest_state">Rest</string>
     <string name="interval_work_state">Work</string>
     <string name="interval_count_text" >Interval %1$d of %2$d</string>
+    <string name="rest_interval">Rest Interval</string>
 </resources>
