@@ -1,14 +1,17 @@
 package com.thefowlj.intervaltrainer
 
-import android.os.Bundle
-import android.os.CountDownTimer
+import android.content.Context
+import android.os.*
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.navigation.fragment.navArgs
 import com.thefowlj.intervaltrainer.databinding.FragmentIntervalBinding
 
+
+const val DEFAULT_VIBRATION_TIME: Long = 500  // ms
 
 /**
  * IntervalFragment
@@ -66,6 +69,7 @@ class IntervalFragment : Fragment() {
                 timer = createCountDownTimer(currentMillis)
                 timer!!.start()
                 countdownRunning = true
+                vibrate(requireContext(), DEFAULT_VIBRATION_TIME)
             }
         }
 
@@ -122,6 +126,7 @@ class IntervalFragment : Fragment() {
                     // Move to complete state
                     currentIntervalState = getString(R.string.interval_complete_text)
                     binding.textViewIntervalState.text = currentIntervalState
+                    vibrate(requireContext(), DEFAULT_VIBRATION_TIME)
                 }
                 else if (currentIntervalState == getString(R.string.interval_work_state)) {
                     // Move work state to rest state
@@ -132,6 +137,9 @@ class IntervalFragment : Fragment() {
                     binding.textviewCountdown.text = TimeUtil.countdownStringFromMillis(currentMillis)
                     binding.intervalStateProgress.max = defaultMillis.toInt()
                     binding.intervalStateProgress.progress = currentMillis.toInt()
+                    vibrate(requireContext(), DEFAULT_VIBRATION_TIME)
+
+                    // Create new CountDownTimer for rest cycle
                     timer = createCountDownTimer(currentMillis)
                     timer?.start()
                 } else {
@@ -144,6 +152,7 @@ class IntervalFragment : Fragment() {
                     binding.textViewIntervalCount.text = getString(R.string.interval_count_text, nCurrentInterval, totalIntervals)
                     binding.textViewIntervalState.text = currentIntervalState
                     binding.intervalStateProgress.max = defaultMillis.toInt()
+                    vibrate(requireContext(), DEFAULT_VIBRATION_TIME)
 
                     // Create a new CountDownTimer for new work/rest interval
                     timer = createCountDownTimer(currentMillis)
@@ -152,5 +161,17 @@ class IntervalFragment : Fragment() {
             }
         }
         return cdTimer
+    }
+
+    /**
+     * Vibrate
+     * https://stackoverflow.com/a/58399229/6814233
+     *
+     * @param context
+     */
+    @Suppress("SameParameterValue")
+    private fun vibrate(context: Context, vibrationTime: Long) {
+        val vib = getSystemService(context, Vibrator::class.java)
+        vib?.vibrate(VibrationEffect.createOneShot(vibrationTime, VibrationEffect.DEFAULT_AMPLITUDE))
     }
 }
